@@ -1,0 +1,28 @@
+-word count
+A = load 'text.txt';
+B = foreach A generate flatten(TOKENIZE((chararray)$0)) as word;
+C = filter B by word matches '\\w+';
+D = group C by word;
+E = foreach D generate COUNT(C), group;
+
+
+dump E;
+store E into '/pigip/wordcountoutput/';
+
+
+--hive
+CREATE EXTERNAL TABLE employee(empid INT, org STRING, ctc INT, loc STRING) 
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ':'
+LOCATION '/user/edureka_121039/Employee.txt';
+
+CREATE EXTERNAL TABLE employee2(empid INT, org STRING, ctc INT, loc STRING) 
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ':';
+
+
+CREATE TABLE employee2(empid INT, org STRING, ctc INT, loc STRING) 
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ':';
+
+load data inpath 'Employee.txt' into table employee2;
